@@ -39,13 +39,13 @@ public class insertar {
 
                 int filas = ps.executeUpdate();
                 if (filas > 0) {
-                    JOptionPane.showMessageDialog(null, "Los datos se guardaron corectamente");
+                    JOptionPane.showMessageDialog(null, "Los datos se guardaron correctamente");
                     return true;
                 }
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "No se guardaron los datos: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "No se guardaron los datos correctamente: " + e.getMessage());
             e.printStackTrace();
         }
 
