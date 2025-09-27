@@ -8,17 +8,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 import admisionuniversitariaacademica.conexionDB; 
 
 public class InterfazHabilitados extends JFrame { 
 
-
     private JPanel panelConsulta;
-    private JTextField txtIdPostulante;
+    private JTextField txtCedula; 
     private JButton btnConsultar;
     private JLabel lblMensajeConsulta;
-
 
     private JPanel panelEstado;
     private JLabel lblEstadoActual;
@@ -31,15 +28,14 @@ public class InterfazHabilitados extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); 
 
-
         panelConsulta = new JPanel();
         panelConsulta.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 5, 5, 5); 
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        gbc.gridx = 0; gbc.gridy = 0; panelConsulta.add(new JLabel("ID Postulante (solo números):"), gbc);
-        gbc.gridx = 1; gbc.gridy = 0; txtIdPostulante = new JTextField(15); panelConsulta.add(txtIdPostulante, gbc);
+        gbc.gridx = 0; gbc.gridy = 0; panelConsulta.add(new JLabel("Cédula del Postulante:"), gbc);
+        gbc.gridx = 1; gbc.gridy = 0; txtCedula = new JTextField(15); panelConsulta.add(txtCedula, gbc); 
 
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 2; 
         btnConsultar = new JButton("Consultar Estado");
@@ -84,7 +80,7 @@ public class InterfazHabilitados extends JFrame {
 
     private void mostrarPanelConsulta() {
         setContentPane(panelConsulta);
-        txtIdPostulante.setText("");
+        txtCedula.setText(""); 
         lblMensajeConsulta.setText(" ");
         revalidate();
         repaint();
@@ -117,43 +113,37 @@ public class InterfazHabilitados extends JFrame {
     }
 
     private void realizarConsulta(ActionEvent e) {
-        String idText = txtIdPostulante.getText().trim();
- 
-        
-        long idPostulante;
-        try {
-            idPostulante = Long.parseLong(idText);
-        } catch (NumberFormatException ex) {
-            lblMensajeConsulta.setText("La ID debe ser un número entero.");
+        String cedulaText = txtCedula.getText().trim(); 
+
+        if (cedulaText.isEmpty()) {
+            lblMensajeConsulta.setText("La Cédula es obligatoria.");
             return;
         }
-
-
+        
         String SQL = "SELECT p.id, pa.estadopago " +
                      "FROM postulantes p " +
                      "LEFT JOIN pago pa ON p.id = pa.idpostulantes " + 
-                     "WHERE p.id = ?"; 
+                     "WHERE p.cedula = ?"; 
         
-        String estadoFinal = "ID de Postulante no encontrado.";
+        String estadoFinal = "Cédula de Postulante no encontrada.";
 
         try (Connection conn = conexionDB.getConnection(); 
              PreparedStatement pstmt = conn.prepareStatement(SQL)) {
 
             if (conn == null) {
-                lblMensajeConsulta.setText("<html><font color='red'> Error de conexión a la base de datos.</font></html>");
+                lblMensajeConsulta.setText("<html><font color='red'>❌ Error de conexión a la base de datos.</font></html>");
                 return;
             }
 
-            pstmt.setLong(1, idPostulante); 
+            pstmt.setString(1, cedulaText); 
 
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-           
+                
                 Boolean estadoPago = (Boolean) rs.getObject("estadopago"); 
                 
                 if (estadoPago == null) {
-                
                     estadoFinal = "En revisión"; 
                 } else if (estadoPago == true) {
                     estadoFinal = "Habilitado";
@@ -169,10 +159,10 @@ public class InterfazHabilitados extends JFrame {
             }
 
         } catch (SQLException ex) {
-            lblMensajeConsulta.setText("<html><font color='red'> Error de DB durante la consulta: " + ex.getMessage() + "</font></html>");
+            lblMensajeConsulta.setText("<html><font color='red'>❌ Error de DB durante la consulta: " + ex.getMessage() + "</font></html>");
             ex.printStackTrace();
         } catch (Exception ex) {
-            lblMensajeConsulta.setText("<html><font color='red'> Error inesperado: " + ex.getMessage() + "</font></html>");
+            lblMensajeConsulta.setText("<html><font color='red'>❌ Error inesperado: " + ex.getMessage() + "</font></html>");
             ex.printStackTrace();
         }
     }
