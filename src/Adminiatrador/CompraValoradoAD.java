@@ -75,8 +75,22 @@ public class CompraValoradoAD {
     } else {
         System.out.println("No se pudo registrar el pago para el postulante con ID: " + idPostulante);
     }
-}
-*/
+}*/
+
 
 }
 
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
+    
