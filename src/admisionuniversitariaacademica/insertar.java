@@ -11,31 +11,31 @@ import javax.swing.JOptionPane;
 
 public class insertar {
 
-    public static boolean guardarDatosEstudiante( long id, String nombres, String apellidos,String fechanacimiento, String telefono, String colegio,String direccion, String carrera) {
+    public static boolean guardarDatosEstudiante( String nombres, String apellidos,String fechanacimiento, String telefono, String colegio,String direccion, String carrera, String cedula) {
 
-        String checkSql = "SELECT COUNT(*) FROM postulantes WHERE id = ?";
-        String insertSql = "INSERT INTO postulantes (id, nombres, apellidos, fechanacimiento, telefono, colegio, direccion, carrera) "
+        String checkSql = "SELECT COUNT(*) FROM postulantes WHERE cedula = ?";
+        String insertSql = "INSERT INTO postulantes (nombres, apellidos, fechanacimiento, telefono, colegio, direccion, carrera, cedula) "
                          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = conexionDB.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement(checkSql)) {
-                ps.setLong(1, id);
+                ps.setString(1, cedula);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next() && rs.getInt(1) > 0) {
-                    JOptionPane.showMessageDialog(null, "Este ID ya está registrado");
+                    JOptionPane.showMessageDialog(null, "Esta cedula ya está registrada");
                     return false;
                 }
             }
 
             try (PreparedStatement ps = con.prepareStatement(insertSql)) {
-                ps.setLong(1, id);
-                ps.setString(2, nombres);
-                ps.setString(3, apellidos);
-                ps.setString(4, fechanacimiento);
-                ps.setString(5, telefono);
-                ps.setString(6, colegio);
-                ps.setString(7, direccion);
-                ps.setString(8, carrera);
+                ps.setString(1, nombres);
+                ps.setString(2, apellidos);
+                ps.setString(3, fechanacimiento);
+                ps.setString(4, telefono);
+                ps.setString(5, colegio);
+                ps.setString(6, direccion);
+                ps.setString(7, carrera);
+                ps.setString(8, cedula);
 
                 int filas = ps.executeUpdate();
                 if (filas > 0) {
@@ -54,14 +54,15 @@ public class insertar {
 
     public static void main(String[] args) {
         guardarDatosEstudiante(
-            235677, 
+    
             "Juan", 
             "Ramirez",  
             "2000-09-21", 
             "7136729", 
             "San Agustin", 
             "calle america", 
-            "Ingeniería Civil"
+            "Ingeniería Civil",
+            "1234567"
         );
     }
 }

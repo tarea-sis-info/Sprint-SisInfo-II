@@ -10,6 +10,7 @@ package admisionuniversitariaacademica;
  */
 public class Postulante {
     private String nombre;
+    private String apellido;
     private String ci;
     private String correo;
     private String fechaNac;
@@ -19,9 +20,10 @@ public class Postulante {
     private String carrera;
 
     // Constructor
-    public Postulante(String nombre, String ci, String correo, String fechaNac, 
+    public Postulante(String nombre,String apellido, String ci, String correo, String fechaNac, 
                       String telefono, String colegio, String direccion, String carrera) {
         this.nombre = nombre;
+        this.apellido = apellido;
         this.ci = ci;
         this.correo = correo;
         this.fechaNac = fechaNac;
@@ -33,6 +35,7 @@ public class Postulante {
 
     // Getters
     public String getNombre() { return nombre; }
+    public String getApellido() { return apellido; }
     public String getCi() { return ci; }
     public String getCorreo() { return correo; }
     public String getFechaNac() { return fechaNac; }
@@ -42,7 +45,9 @@ public class Postulante {
     public String getCarrera() { return carrera; }
 
     // Setters
+    /**
     public void setNombre(String nombre) { this.nombre = nombre; }
+    public String setApellido() { return apellido; }
     public void setCi(String ci) { this.ci = ci; }
     public void setCorreo(String correo) { this.correo = correo; }
     public void setFechaNac(String fechaNac) { this.fechaNac = fechaNac; }
@@ -50,5 +55,6 @@ public class Postulante {
     public void setColegio(String colegio) { this.colegio = colegio; }
     public void setDireccion(String direccion) { this.direccion = direccion; }
     public void setCarrera(String carrera) { this.carrera = carrera; }
+    * */
 }
 
