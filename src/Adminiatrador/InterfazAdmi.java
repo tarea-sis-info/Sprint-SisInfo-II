@@ -8,6 +8,9 @@ package Adminiatrador;
  *
  * @author User
  */
+import static Adminiatrador.CompraValoradoAD.registrarPagoValorado;
+import static Adminiatrador.CompraValoradoAD.verificarRegistro;
+import Adminiatrador.conexionPagoBD;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -15,37 +18,48 @@ import javax.swing.JOptionPane;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.ResultSet;
+import javax.swing.JButton;
 
 public class InterfazAdmi extends javax.swing.JFrame {
-
-    
+    private boolean modoRegistrar = false; 
+    private String ci1=null;
     
    public InterfazAdmi() {
         initComponents();
-        btnRegistrar = new JButton("Registrar"); 
-        btnRegistrar.setEnabled(false);
+        jButton1.setText("Consultar");
+        jButton1.setEnabled(true);
     }
     
    
    
-   private void Consultar() {
-        String cedula = txtCI.getText().trim();
-        int ci;
-        ci=Integer.parseInt(cedula);
-        try (Connection con = dbconexion.getConnection()) {
-            boolean existe = existePostulante(con, ci);
-            if (existe) {
-                btnjButton1.setEnabled(true);
-                btnRegistrar.setEnabled(existe);
-                JOptionPane.showMessageDialog(this, "El postulante está registrado.");
-            } else {
-                btnjButton1.setEnabled(false);
-                JOptionPane.showMessageDialog(this, "El postulante no está registrado.");
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al consultar: " + ex.getMessage());
-        }
+  private void Consultar() {
+    String cedula = txtCI.getText().trim();
+    if (cedula.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese el C.I.");
+        return;
     }
+
+    try  {
+        boolean existe=verificarRegistro(cedula);
+
+        if (existe) {
+            ci1=cedula;
+            modoRegistrar = true;
+            jButton1.setText("Registrar");   
+            jButton1.setEnabled(true);
+            
+            JOptionPane.showMessageDialog(this,"Postulante encontrado.");
+        } else {
+            ci1=null;
+            modoRegistrar = false;
+            jButton1.setText("Consultar");
+            jButton1.setEnabled(true);
+            JOptionPane.showMessageDialog(this, "El postulante no está registrado.");
+        }
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Error al consultar: " + ex.getMessage());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -136,7 +150,21 @@ public class InterfazAdmi extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCIActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        if (!modoRegistrar) {
+        
+        Consultar();       
+        
+    } else {
+        boolean sepudo=registrarPagoValorado(ci1);
+        if (sepudo){
+            JOptionPane.showMessageDialog(this,"Pago registrado correctamente." );
+        }else{
+           JOptionPane.showMessageDialog(this,"no se pudo registrar" );  
+         }
+        modoRegistrar = false;
+        jButton1.setText("Consultar");
+        txtCI.setText("");
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
