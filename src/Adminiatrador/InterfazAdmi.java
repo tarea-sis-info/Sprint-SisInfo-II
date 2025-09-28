@@ -31,7 +31,21 @@ public class InterfazAdmi extends javax.swing.JFrame {
         jButton1.setText("Consultar");
         jButton1.setEnabled(true);
     }
-    
+    private boolean validarDocumento(String cedula) {
+       if (cedula.isEmpty()) {
+           JOptionPane.showMessageDialog(this, "El campo C.I. no puede estar vacío.");
+           return false;
+       }
+
+       try {
+           Integer.parseInt(cedula); 
+       } catch (NumberFormatException e) {
+           JOptionPane.showMessageDialog(this, "C.I. debe contener solo números enteros.");
+           return false;
+       }
+
+       return true;
+   }
    
    
   private void Consultar() {
@@ -146,14 +160,17 @@ public class InterfazAdmi extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCIActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (!modoRegistrar) {
-        
-        Consultar();       
-        
+   String cedula = txtCI.getText().trim();                                                                         
+   if (!modoRegistrar) {
+      if (!validarDocumento(cedula))
+{
+            return; 
+        }
+        Consultar();
     } else {
-        boolean sepudo=registrarPagoValorado(ci1);
-        if (sepudo){
-            JOptionPane.showMessageDialog(this,"Pago registrado correctamente." );
+         boolean sepudo = registrarPagoValorado(ci1);  
+         if(sepudo){
+        JOptionPane.showMessageDialog(this,"Pago registrado correctamente." );
         }else{
            JOptionPane.showMessageDialog(this,"no se pudo registrar" );  
          }
@@ -164,40 +181,6 @@ public class InterfazAdmi extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InterfazAdmi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InterfazAdmi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InterfazAdmi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InterfazAdmi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InterfazAdmi().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
