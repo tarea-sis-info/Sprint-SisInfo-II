@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package admisionuniversitariaacademica;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,13 +35,13 @@ public class insertar {
 
                 int filas = ps.executeUpdate();
                 if (filas > 0) {
-                    JOptionPane.showMessageDialog(null, "Los datos se guardaron corectamente");
+                    JOptionPane.showMessageDialog(null, "Los datos se guardaron correctamente");
                     return true;
                 }
             }
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "No se guardaron los datos: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "No se guardaron los datos correctamente: " + e.getMessage());
             e.printStackTrace();
         }
 
