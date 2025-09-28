@@ -6,7 +6,7 @@ package admisionuniversitariaacademica;
  */
 
 /**
- *
+ * solucionando problemas con esta clase
  * @author Rodrigo
  */
 import javax.swing.JOptionPane;
