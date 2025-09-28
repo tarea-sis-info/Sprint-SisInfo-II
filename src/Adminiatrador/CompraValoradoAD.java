@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import admisionuniversitariaacademica.conexionDB;
 /**
  *
  * @author User
@@ -17,7 +16,7 @@ public class CompraValoradoAD {
     
  public static int verificarRegistro(String cedula) {
         String sql = "SELECT id FROM postulantes WHERE cedula = ?";
-        try (Connection con = conexionDB.getConnection();
+        try (Connection con = conexionPagoBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, cedula);
@@ -37,7 +36,7 @@ public class CompraValoradoAD {
  public static boolean registrarPagoValorado(int idPostulante) {
         String sql = "INSERT INTO pago (id_postulante) VALUES (?)";
 
-        try (Connection con = conexionDB.getConnection();
+        try (Connection con = conexionPagoBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idPostulante);
