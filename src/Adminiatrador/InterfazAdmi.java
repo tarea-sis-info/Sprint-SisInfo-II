@@ -22,7 +22,7 @@ import javax.swing.JButton;
 
 public class InterfazAdmi extends javax.swing.JFrame {
     private boolean modoRegistrar = false; 
-    private int idPostulanteTmp = -1;
+    private String ci1=null;
     
    public InterfazAdmi() {
         initComponents();
@@ -39,19 +39,18 @@ public class InterfazAdmi extends javax.swing.JFrame {
         return;
     }
 
-    try (Connection con = conexionPagoBD.getConnection()) {
-        int idPostulante = verificarRegistro(cedula); // SOLO verifica
+    try  {
+        boolean existe=verificarRegistro(cedula);
 
-        if (idPostulante != -1) {
-            // Postulante existe → prepara para registrar
-            idPostulanteTmp = idPostulante;
+        if (existe) {
+            ci1=cedula;
             modoRegistrar = true;
-            jButton1.setText("Registrar");   // cambia texto del mismo botón
+            jButton1.setText("Registrar");   
             jButton1.setEnabled(true);
             
             JOptionPane.showMessageDialog(this,"Postulante encontrado.");
         } else {
-            idPostulanteTmp = -1;
+            ci1=null;
             modoRegistrar = false;
             jButton1.setText("Consultar");
             jButton1.setEnabled(true);
@@ -139,14 +138,20 @@ public class InterfazAdmi extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCIActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (!modoRegistrar) {
-        jButton1.setText("Registrar");
+         if (!modoRegistrar) {
+        
         Consultar();       
-        modoRegistrar = true; 
+        
     } else {
+        boolean sepudo=registrarPagoValorado(ci1);
+        if (sepudo){
+            JOptionPane.showMessageDialog(this,"Pago registrado correctamente." );
+        }else{
+           JOptionPane.showMessageDialog(this,"no se pudo registrar" );  
+         }
+        modoRegistrar = false;
         jButton1.setText("Consultar");
-        registrarPagoValorado(idPostulanteTmp);
-        modoRegistrar = false; 
+        txtCI.setText("");
     }
     }//GEN-LAST:event_jButton1ActionPerformed
 
