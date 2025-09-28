@@ -7,6 +7,12 @@ package Adminiatrador;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+/**
+ *
+ * @author User
+ */
+
 public class conexionPagoBD {
     private static String url = "jdbc:postgresql://db.svmjofkdktqtvtrfhtrv.supabase.co:5432/postgres";
     private static String usuario = "postgres";
@@ -26,7 +32,5 @@ public class conexionPagoBD {
     return conectar();
 }
 
-    
-}
-    
 
+}

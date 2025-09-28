@@ -14,32 +14,31 @@ public class CompraValoradoAD {
      * @param args the command line arguments
      */
     
- public static int verificarRegistro(String cedula) {
-        String sql = "SELECT id FROM postulantes WHERE cedula = ?";
+
+ public static boolean verificarRegistro(String cedula) {
+        String sql = "SELECT 1 FROM postulantes WHERE cedula = ?";
+
         try (Connection con = conexionPagoBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, cedula);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("id"); 
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try (ResultSet rs = ps.executeQuery()) {
+            return rs.next();
         }
-        return -1; 
+        } catch (SQLException e) {
+           e.printStackTrace();
+          return false;
+    }       
     }
     
  
- public static boolean registrarPagoValorado(int idPostulante) {
-        String sql = "INSERT INTO pago (id_postulante) VALUES (?)";
+ public static boolean registrarPagoValorado(String cedula) {
+        String sql = "INSERT INTO pago (cedula,estadopago,montodepago) VALUES (?,TRUE,15)";
 
         try (Connection con = conexionPagoBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, idPostulante);
+            ps.setString(1, cedula);
             int filas = ps.executeUpdate();
 
             return filas > 0;

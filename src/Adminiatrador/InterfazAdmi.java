@@ -22,7 +22,9 @@ import javax.swing.JButton;
 
 public class InterfazAdmi extends javax.swing.JFrame {
     private boolean modoRegistrar = false; 
-    private int idPostulanteTmp = -1;
+
+    private String ci1=null;
+
     
    public InterfazAdmi() {
         initComponents();
@@ -39,19 +41,22 @@ public class InterfazAdmi extends javax.swing.JFrame {
         return;
     }
 
-    try (Connection con = conexionPagoBD.getConnection()) {
-        int idPostulante = verificarRegistro(cedula); // SOLO verifica
 
-        if (idPostulante != -1) {
-            // Postulante existe → prepara para registrar
-            idPostulanteTmp = idPostulante;
+    try  {
+        boolean existe=verificarRegistro(cedula);
+
+        if (existe) {
+            ci1=cedula;
             modoRegistrar = true;
-            jButton1.setText("Registrar");   // cambia texto del mismo botón
+            jButton1.setText("Registrar");   
+
             jButton1.setEnabled(true);
             
             JOptionPane.showMessageDialog(this,"Postulante encontrado.");
         } else {
-            idPostulanteTmp = -1;
+
+            ci1=null;
+
             modoRegistrar = false;
             jButton1.setText("Consultar");
             jButton1.setEnabled(true);
@@ -113,7 +118,8 @@ public class InterfazAdmi extends javax.swing.JFrame {
                 .addComponent(txtCI, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(148, 148, 148)
+                .addGap(138, 138, 138)
+
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -126,9 +132,10 @@ public class InterfazAdmi extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtCI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+
+                .addGap(27, 27, 27)
                 .addComponent(jButton1)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         pack();
@@ -140,13 +147,20 @@ public class InterfazAdmi extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (!modoRegistrar) {
-        jButton1.setText("Registrar");
+        
         Consultar();       
-        modoRegistrar = true; 
+        
     } else {
+        boolean sepudo=registrarPagoValorado(ci1);
+        if (sepudo){
+            JOptionPane.showMessageDialog(this,"Pago registrado correctamente." );
+        }else{
+           JOptionPane.showMessageDialog(this,"no se pudo registrar" );  
+         }
+        modoRegistrar = false;
         jButton1.setText("Consultar");
-        registrarPagoValorado(idPostulanteTmp);
-        modoRegistrar = false; 
+        txtCI.setText("");
+
     }
     }//GEN-LAST:event_jButton1ActionPerformed
 
