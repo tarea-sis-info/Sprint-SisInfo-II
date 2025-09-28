@@ -14,8 +14,10 @@ public class CompraValoradoAD {
      * @param args the command line arguments
      */
     
+
  public static boolean verificarRegistro(String cedula) {
         String sql = "SELECT 1 FROM postulantes WHERE cedula = ?";
+
         try (Connection con = conexionPagoBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
