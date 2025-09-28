@@ -11,11 +11,19 @@ package admisionuniversitariaacademica;
  */
 import javax.swing.JOptionPane;
 
-public class RegistroPostulantes2 extends javax.swing.JFrame {
+public class InterfazRegistroPostulante extends javax.swing.JFrame {
 
-    private Postulante postulante;
+    private String nombre;
+    private String apellido;
+    private String ci;
+    private String correo;
+    private String fechaNac;
+    private String telefono;
+    private String colegio;
+    private String direccion;
+    private String carrera;
     
-    public RegistroPostulantes2() {
+    public InterfazRegistroPostulante() {
         initComponents();
         BtnImprimir.setEnabled(false);
     }
@@ -210,46 +218,46 @@ public class RegistroPostulantes2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
-        postulante = new Postulante(
-            CasillaNombre.getText(),
-            CasillaApellido.getText(),
-            CasillaCI.getText(),
-            CasillaCorreo.getText(),
-            CasillaFecha.getText(),
-            CasillaTelefono.getText(),
-            CasillaColegio.getText(),
-            CasillaDir.getText(),
-            CasillaCarrera.getText()
-        );
+        nombre = CasillaNombre.getText();
+        apellido = CasillaApellido.getText();
+        ci = CasillaCI.getText();
+        correo = CasillaCorreo.getText();
+        telefono = CasillaTelefono.getText();
+        colegio = CasillaColegio.getText();
+        direccion = CasillaDir.getText();
+        carrera = CasillaCarrera.getText();
+        fechaNac = CasillaFecha.getText();
 
+    // Guardar en base de datos
+    boolean guardado = insertar.guardarDatosEstudiante(
+            nombre, 
+            apellido, 
+            fechaNac, 
+            telefono, 
+            colegio, 
+            direccion, 
+            carrera, 
+            ci
+    );
+
+    if(guardado){
         JOptionPane.showMessageDialog(null, "Datos guardados correctamente.");
-
         BtnImprimir.setEnabled(true);  
+    }
     }//GEN-LAST:event_BtnGuardarActionPerformed
 
     private void BtnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnImprimirActionPerformed
-        if (postulante != null) {
-        // Llamamos al método de GeneradorFormulario con los datos guardados
-        boolean exito = GeneradorFormulario.generarPDF(
-            postulante.getNombre(),
-            postulante.getApellido(),
-            postulante.getCi(),
-            postulante.getCorreo(),
-            CasillaFecha.getText(),
-            postulante.getTelefono(),
-            postulante.getColegio(),
-            postulante.getDireccion(),
-            postulante.getCarrera()
-        );
-
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "PDF generado correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al generar el PDF.");
-        }
-        } else {
-            JOptionPane.showMessageDialog(this, "No hay datos para imprimir.");
-        }
+        GeneradorFormulario.generarPDF(
+        nombre,
+        apellido,
+        ci,
+        correo,
+        fechaNac,
+        telefono,
+        colegio,
+        direccion,
+        carrera
+    );
     }//GEN-LAST:event_BtnImprimirActionPerformed
 
     private void CasillaCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CasillaCorreoActionPerformed
@@ -273,20 +281,21 @@ public class RegistroPostulantes2 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegistroPostulantes2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfazRegistroPostulante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegistroPostulantes2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfazRegistroPostulante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegistroPostulantes2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfazRegistroPostulante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegistroPostulantes2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfazRegistroPostulante.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RegistroPostulantes2().setVisible(true);
+                new InterfazRegistroPostulante().setVisible(true);
             }
         });
     }
