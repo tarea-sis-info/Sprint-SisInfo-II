@@ -1,4 +1,4 @@
-package admisionuniversitariaacademica;
+package Postulante;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
@@ -152,13 +152,4 @@ public class GeneradorFormulario {
         System.out.println(" No se pudo abrir el Archivo: " + e.getMessage());
     }
 }
-    
-    
-    
-    
-    
-    // Una prueba main por que debo conectar con resgistro y la base de datos pero la generacion funciona
-    public static void main(String[] args) {
-        generarPDF("María José", "García López", "9876543", "maria.garcia@email.com", "20/08/1999", "6987452", "Colegio San Agustín", "Calle Principal 456, Urb. Las Flores", "Medicina");
-    }
 }
