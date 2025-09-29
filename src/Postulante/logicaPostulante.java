@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  *
  * @author fabic
  */
-public class LogicaPostulante {
+public class logicaPostulante {
     
     public static boolean guardarDatosEstudiante( String nombres, String apellidos,String fechanacimiento, String telefono, String colegio,String direccion, String carrera, String cedula) {
 

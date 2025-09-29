@@ -300,7 +300,7 @@ try {
     return;
 }
     // Guardar en base de datos
-    boolean guardado = LogicaPostulante.guardarDatosEstudiante(nombre, apellido, fechaNac, telefono, colegio, direccion, carrera, ci);
+    boolean guardado = logicaPostulante.guardarDatosEstudiante(nombre, apellido, fechaNac, telefono, colegio, direccion, carrera, ci);
 
     if(guardado){
         BtnImprimir.setEnabled(true);  

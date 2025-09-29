@@ -33,12 +33,13 @@ public class CompraValoradoAD {
     
  
  public static boolean registrarPagoValorado(String cedula) {
-        String sql = "INSERT INTO pago (cedula,estadopago,montodepago) VALUES (?,TRUE,15)";
+        String sql = "INSERT INTO pago (cedula,estadopago,montodepago,comprobante) VALUES (?,TRUE,10,?)";
 
         try (Connection con = conexionPagoBD.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, cedula);
+            ps.setString(2, cedula);
             int filas = ps.executeUpdate();
 
             return filas > 0;

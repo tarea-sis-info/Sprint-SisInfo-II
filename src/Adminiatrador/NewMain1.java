@@ -8,19 +8,19 @@ package Adminiatrador;
  *
  * @author User
  */
-public class NewMain {
+public class NewMain1 {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+     
         javax.swing.SwingUtilities.invokeLater(() -> {
-            Administrador2 ui = new Administrador2();
+            Cajero1 ui = new Cajero1();
             ui.setLocationRelativeTo(null); 
             ui.setVisible(true);
         });
     
     }
+    }
     
-  
-}
