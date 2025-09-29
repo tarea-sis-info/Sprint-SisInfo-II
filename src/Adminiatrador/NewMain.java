@@ -15,11 +15,12 @@ public class NewMain {
      */
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(() -> {
-            InterfazAdmi ui = new InterfazAdmi();
+            Administrador2 ui = new Administrador2();
             ui.setLocationRelativeTo(null); 
             ui.setVisible(true);
         });
     
     }
+    
   
 }

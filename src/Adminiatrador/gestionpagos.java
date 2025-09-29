@@ -4,7 +4,7 @@
  */
 package Adminiatrador;
 
-import admisionuniversitariaacademica.conexionDB;
+import DataBaseConection.ConexionDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class gestionpagos {
     public String consultarEstadoPago(String cedula) {
     String estado = "El postulante no tiene pagos registrados";
 
-    try (Connection conn = conexionDB.getConnection()) {
+    try (Connection conn = ConexionDB.getConnection()) {
         String sql = "SELECT p.estadopago " + "FROM pago p " + "INNER JOIN postulantes po ON p.idpostulante = po.idpostulante " + "WHERE po.cedula = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, cedula);

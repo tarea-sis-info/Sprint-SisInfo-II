@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package admisionuniversitariaacademica;
+package Postulante;
 
+import DataBaseConection.ConexionDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,16 +17,13 @@ import javax.swing.JOptionPane;
  */
 public class logicaPostulante {
     
-    
-public class insertar {
-
     public static boolean guardarDatosEstudiante( String nombres, String apellidos,String fechanacimiento, String telefono, String colegio,String direccion, String carrera, String cedula) {
 
         String checkSql = "SELECT COUNT(*) FROM postulantes WHERE cedula = ?";
         String insertSql = "INSERT INTO postulantes (nombres, apellidos, fechanacimiento, telefono, colegio, direccion, carrera, cedula) "
                          + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = conexionDB.getConnection()) {
+        try (Connection con = ConexionDB.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement(checkSql)) {
                 ps.setString(1, cedula);
                 ResultSet rs = ps.executeQuery();
@@ -60,19 +58,5 @@ public class insertar {
         return false;
     }
 
-    public static void main(String[] args) {
-        guardarDatosEstudiante(
-    
-            "Juan", 
-            "Ramirez",  
-            "2000-09-21", 
-            "7136729", 
-            "San Agustin", 
-            "calle america", 
-            "Ingeniería Civil",
-            "1234567"
-        );
-    }
 }
 
-}
