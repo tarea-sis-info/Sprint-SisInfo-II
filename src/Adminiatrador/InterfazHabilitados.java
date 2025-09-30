@@ -121,9 +121,9 @@ public class InterfazHabilitados extends JFrame {
         }
         
         String SQL = "SELECT p.id, pa.estadopago " +
-                     "FROM postulantes p " +
-                     "LEFT JOIN pago pa ON p.id = pa.idpostulantes " + 
-                     "WHERE p.cedula = ?"; 
+             "FROM postulantes p " +
+             "LEFT JOIN pago pa ON p.cedula = pa.comprobante " +  
+             "WHERE p.cedula = ?";
         
         String estadoFinal = "Cédula de Postulante no encontrada.";
 
