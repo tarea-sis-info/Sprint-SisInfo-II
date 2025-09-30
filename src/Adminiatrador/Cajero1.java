@@ -20,13 +20,11 @@ import java.util.logging.Logger;
 import java.sql.ResultSet;
 import javax.swing.JButton;
 
-public class InterfazAdmi extends javax.swing.JFrame {
+public class Cajero1 extends javax.swing.JFrame {
     private boolean modoRegistrar = false; 
-
     private String ci1=null;
-
     
-   public InterfazAdmi() {
+   public Cajero1() {
         initComponents();
         jButton1.setText("Consultar");
         jButton1.setEnabled(true);
@@ -55,7 +53,6 @@ public class InterfazAdmi extends javax.swing.JFrame {
         return;
     }
 
-
     try  {
         boolean existe=verificarRegistro(cedula);
 
@@ -63,14 +60,11 @@ public class InterfazAdmi extends javax.swing.JFrame {
             ci1=cedula;
             modoRegistrar = true;
             jButton1.setText("Registrar");   
-
             jButton1.setEnabled(true);
             
             JOptionPane.showMessageDialog(this,"Postulante encontrado.");
         } else {
-
             ci1=null;
-
             modoRegistrar = false;
             jButton1.setText("Consultar");
             jButton1.setEnabled(true);
@@ -133,7 +127,6 @@ public class InterfazAdmi extends javax.swing.JFrame {
                 .addContainerGap(31, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(138, 138, 138)
-
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -146,7 +139,6 @@ public class InterfazAdmi extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtCI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-
                 .addGap(27, 27, 27)
                 .addComponent(jButton1)
                 .addContainerGap(108, Short.MAX_VALUE))
@@ -177,7 +169,6 @@ public class InterfazAdmi extends javax.swing.JFrame {
         modoRegistrar = false;
         jButton1.setText("Consultar");
         txtCI.setText("");
-
     }
     }//GEN-LAST:event_jButton1ActionPerformed
 

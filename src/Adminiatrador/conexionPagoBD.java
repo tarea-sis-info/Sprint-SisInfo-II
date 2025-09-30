@@ -2,11 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package admisionuniversitariaacademica;
+package Adminiatrador;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-public class conexionDB {
+
+/**
+ *
+ * @author User
+ */
+
+public class conexionPagoBD {
     private static String url = "jdbc:postgresql://db.svmjofkdktqtvtrfhtrv.supabase.co:5432/postgres";
     private static String usuario = "postgres";
     private static String contraseña = "sisinfoII2025";
@@ -24,5 +31,6 @@ public class conexionDB {
     public static Connection getConnection() {
     return conectar();
 }
-}
 
+
+}
