@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
+import Postulante.logicaPostulante;
 
 /**
  *
@@ -68,17 +69,49 @@ private void Verificar() {
     }
 }
 public static boolean habilitar(String nComprobante) {
-    final String sql =
-        "UPDATE public.postulantes po " + "SET estadoexamen = 'HABILITADO' " +  "FROM public.pago pa " + "WHERE TRIM(pa.comprobante) = TRIM(?) " +
-        "  AND TRIM(po.cedula) = TRIM(pa.comprobante) " +"RETURNING po.cedula";
+    String sqlSelect = "SELECT po.id, po.apellido FROM public.postulantes po " +
+                      "JOIN public.pago pa ON TRIM(po.cedula) = TRIM(pa.comprobante) " +
+                      "WHERE TRIM(pa.comprobante) = ?";
+    
+    final String sqlUpdate = 
+        "UPDATE public.postulantes po " + 
+        "SET estadoexamen = 'HABILITADO' " +  
+        "FROM public.pago pa " + 
+        "WHERE TRIM(pa.comprobante) = TRIM(?) " +
+        "  AND TRIM(po.cedula) = TRIM(pa.comprobante) " +
+        "RETURNING po.cedula";
 
-    try (Connection con = conexionPagoBD.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-
-        ps.setString(1,nComprobante.trim());
-        try (ResultSet rs = ps.executeQuery()) {
-            return rs.next(); 
+    try (Connection con = conexionPagoBD.getConnection()) {
+        
+        int idPostulante = -1;
+        String apellido = "";
+        
+        try (PreparedStatement psSelect = con.prepareStatement(sqlSelect)) {
+            psSelect.setString(1, nComprobante.trim());
+            try (ResultSet rs = psSelect.executeQuery()) {
+                if (rs.next()) {
+                    idPostulante = rs.getInt("id");
+                    apellido = rs.getString("apellido");
+                }
+            }
         }
+        
+        try (PreparedStatement psUpdate = con.prepareStatement(sqlUpdate)) {
+            psUpdate.setString(1, nComprobante.trim());
+            try (ResultSet rs = psUpdate.executeQuery()) {
+                if (rs.next()) {
+                    if (idPostulante != -1 && !apellido.isEmpty()) {
+                        Postulante.logicaPostulante.asignacionAula(
+                            idPostulante, apellido, 
+                            "2024-01-20", "08:00:00", "Edificio Principal"
+                        );
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+        
     } catch (SQLException e) {
         e.printStackTrace();
         return false;
@@ -154,7 +187,7 @@ public static boolean habilitar(String nComprobante) {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtComprobanteActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtComprobanteActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -177,4 +210,5 @@ public static boolean habilitar(String nComprobante) {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txtComprobante;
     // End of variables declaration//GEN-END:variables
+
 }
