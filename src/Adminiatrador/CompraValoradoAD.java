@@ -23,22 +23,48 @@ public class CompraValoradoAD {
             return false;
         }
     }
-    public static boolean registrarPagoValorado(String cedula) {
-        final String sql = "INSERT INTO pago (cedula, estadopago, montodepago, comprobante, fechapago) "
-                + "VALUES (?, TRUE, 10, ?, now())";
-        try (Connection con = getConn();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, cedula);
-            ps.setString(2, cedula);
-            int filas = ps.executeUpdate();
-            return filas > 0;
+
+    public static boolean registrarPagoValorado(String cedula, double monto) {
+        final String SQL_INSERT =
+            "INSERT INTO pago (cedula, estadopago, montodepago, comprobante, fechapago) " +
+            "VALUES (?, TRUE, ?, ?, now())";
+        final String SQL_UPDATE =
+            "UPDATE postulantes SET estadoexamen = 'HABILITADO' WHERE cedula = ?";
+
+        try (Connection con = getConn()) {
+            con.setAutoCommit(false);
+
+            int inserted;
+            try (PreparedStatement ps = con.prepareStatement(SQL_INSERT)) {
+                ps.setString(1, cedula);
+                ps.setDouble(2, monto);
+                ps.setString(3, cedula); 
+                inserted = ps.executeUpdate();
+            }
+
+            if (inserted <= 0) {
+                con.rollback();
+                return false;
+            }
+
+            try (PreparedStatement psu = con.prepareStatement(SQL_UPDATE)) {
+                psu.setString(1, cedula);
+                psu.executeUpdate();
+            }
+
+            con.commit();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-
-    public static boolean registrarPagoInscripcionPorNombre(String nombreEntrada, double monto) {
+ public static boolean registrarPagoValorado(String cedula) {
+        final double MONTO_POR_DEFECTO = 10.0;
+        return registrarPagoValorado(cedula, MONTO_POR_DEFECTO);
+    }
+ 
+ public static boolean registrarPagoInscripcionPorNombre(String nombreEntrada, double monto) {
         final String nombreNorm = nombreEntrada == null ? "" : nombreEntrada.trim();
         final String SQL_FIND =
             "SELECT cedula, TRIM(nombres) AS nombres, TRIM(apellidos) AS apellidos " +
@@ -77,7 +103,7 @@ public class CompraValoradoAD {
 
             if (cedula == null || cedula.isEmpty()) {
                 con.rollback();
-                return false; 
+                return false;
             }
             String comprobante = cedula;
 
